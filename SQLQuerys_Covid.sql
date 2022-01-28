@@ -225,8 +225,23 @@ Covid.dbo.CovidDeaths
 WHERE
 continent IS NOT NULL
 
---Query 13: Create a View for continent,totaldeathcount from query 
--- changed 
+
+
+-- Query 13: -tableau, Total Death Count by Continent(location), European Union is part of Europe
+
+SELECT 
+location,
+SUM(CAST(new_deaths AS int)) AS Totaldeaths
+FROM 
+Covid.dbo.CovidDeaths
+WHERE
+continent IS NULL -- when continent is NULL the location is the continent
+AND location NOT IN ('Upper middle income','World','European Union', 'Lower middle income', 'Low income','International', 'High Income')
+GROUP BY
+location
+ORDER BY
+TotalDeaths DESC
+
 
 -- Query 14: Create View for PercentPopulationVaccinated from Query 10
 CREATE VIEW VPercentPopulationVAccinated AS
@@ -245,22 +260,8 @@ ON d.location = v.location
 AND d.date = v.date
 WHERE d.continent IS NOT NULL
 
--- Query 13: -tableau, Total Death Count by Continent(location), European Union is part of Europe
 
-SELECT 
-location,
-SUM(CAST(new_deaths AS int)) AS Totaldeaths
-FROM 
-Covid.dbo.CovidDeaths
-WHERE
-continent IS NULL -- when continent is NULL the location is the continent
-AND location NOT IN ('Upper middle income','World','European Union', 'Lower middle income', 'Low income','International', 'High Income')
-GROUP BY
-location
-ORDER BY
-TotalDeaths DESC
-
---Query 14: tableau PercentPopulationInfected 
+--Query 15: tableau PercentPopulationInfected 
 SELECT
  location,
  population,
